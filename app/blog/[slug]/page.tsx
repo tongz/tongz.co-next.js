@@ -1,3 +1,4 @@
+import { Callout } from "@/components/Callout";
 import { getPostBySlug, getAllPosts } from "@/lib/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { notFound } from "next/navigation";
@@ -36,6 +37,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
+	const components = { Callout };
+
   return (
     <article>
       <div className="article-header">
@@ -44,7 +47,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         <div className="article-date">{post.date}</div>
       </div>
       <div className="article-body">
-        <MDXRemote source={post.content} />
+        <MDXRemote source={post.content} components={components} />
       </div>
       <a href="/" className="back-link">← กลับหน้าแรก</a>
     </article>

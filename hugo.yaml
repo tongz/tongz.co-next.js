@@ -1,0 +1,32 @@
+baseURL: "https://tongz.co/"
+languageCode: "th"
+title: "Tongz"
+theme: "PaperMod"
+paginate: 5
+
+params:
+  env: production
+  title: "Tongz"
+  description: "Portfolio of Tongz"
+  author: "Tongz"
+
+  homeInfoParams:
+    Title: "สวัสดีครับ 👋"
+    Content: "ยินดีต้อนรับสู่ Portfolio ของผม"
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/YOUR_GITHUB"
+
+  ShowReadingTime: true
+  ShowShareButtons: false
+  ShowPostNavLinks: true
+
+menu:
+  main:
+    - name: "Blog"
+      url: "/posts/"
+      weight: 10
+    - name: "About"
+      url: "/about/"
+      weight: 20

@@ -57,8 +57,7 @@ export const revalidate = 60
 
 export default async function BlogPostPage({ params }: Props) {
   const post = await getPostBySlug(params.slug)
-  if (!post || post.status !== "published") notFound()
-
+  if (!post) notFound()
   return (
     <article className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
       {/* Back button */}

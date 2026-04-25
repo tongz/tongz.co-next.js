@@ -1,0 +1,87 @@
+---
+title: "Anthropic ยอมรับ Claude Code ด้อยลงจากการอัปเดต 3 จุดพร้อมกัน"
+date: "2026-04-25"
+lastModified: "2026-04-25"
+tags: ["claude", "anthropic", "claude-code", "ai", "developer-tools"]
+coverImage: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1200&q=80"
+coverImageAlt: "หน้าจอคอมพิวเตอร์แสดงโค้ดและ AI interface — Claude Code performance issue"
+excerpt: "Anthropic ยืนยันว่า Claude Code ประสิทธิภาพลดลงจริง หลังพบสาเหตุ 3 ข้อที่เกิดขึ้นพร้อมกันในเดือน มี.ค.–เม.ย. 2026 พร้อมรีเซ็ต usage limit ชดเชยผู้ใช้"
+slug: "anthropic-claude-code-performance-decline-postmortem-2026"
+author: "ชื่อเจ้าของ blog"
+draft: false
+canonicalUrl: "https://www.theregister.com/2026/04/23/anthropic_says_it_has_fixed/"
+sourceTitle: "Anthropic admits it dumbed down Claude when trying to make it smarter"
+sourceUrl: "https://www.theregister.com/2026/04/23/anthropic_says_it_has_fixed/"
+sourceAuthor: "Thomas Claburn"
+sourcePublishedAt: "2026-04-23"
+---
+
+import { Callout } from '@/components/mdx/Callout'
+
+# Anthropic ยอมรับ Claude Code ด้อยลงจากการอัปเดต 3 จุดพร้อมกัน
+
+![หน้าจอคอมพิวเตอร์แสดงโค้ดและ AI interface — Claude Code performance issue](https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1200&q=80)
+
+ช่วงเดือน มีนาคม–เมษายน 2026 ที่ผ่านมา ผู้ใช้ **Claude Code** จำนวนมากรู้สึกว่า AI ตัวโปรดของตัวเองทำงานได้แย่ลงผิดสังเกต ตอบคำถามซ้ำๆ ลืมบริบทเดิม และคุณภาพโค้ดที่ได้ก็ไม่เหมือนเดิม หลายคนเริ่มตั้งคำถามว่า Anthropic แอบลดคุณภาพหรือเปล่า — และคำตอบก็มาแล้ว เมื่อวันที่ 23 เมษายน 2026 Anthropic ออกมายืนยันว่า ปัญหาที่เกิดขึ้นนั้น **มีจริง** และเกิดจากการเปลี่ยนแปลงที่ผิดพลาด 3 จุดในเวลาใกล้เคียงกัน
+
+## 3 สาเหตุที่ทำให้ Claude Code แย่ลง
+
+### 1. ลด Reasoning Effort จาก High → Medium (4 มีนาคม)
+
+Anthropic ปรับค่าเริ่มต้นของ reasoning effort ใน Claude Code จากระดับ "high" ลงมาเป็น "medium" โดยหวังว่าจะลด latency (ความล่าช้า) ให้ผู้ใช้รอน้อยลง แต่ผลที่ได้คือ Claude คิดน้อยลง ตอบได้ตื้นกว่าเดิม
+
+<Callout type="info">
+  Reasoning Effort คือค่าที่ควบคุมว่า Claude จะ "คิดหนัก" แค่ไหนก่อนตอบ ยิ่งสูงยิ่งฉลาด แต่ก็ใช้เวลาและ token มากขึ้น
+</Callout>
+
+Anthropic ยอมรับว่านี่คือ "การแลกเปลี่ยนที่ผิดพลาด" และได้เปลี่ยนกลับไปใช้ค่าสูงตั้งแต่วันที่ 7 เมษายน โดย Claude Code เวอร์ชันล่าสุด (v2.1.118) ตั้งค่า reasoning ไว้ที่ระดับ "xhigh" บน Sonnet 4.6 แล้ว
+
+### 2. Bug ในระบบ Cache ทำให้ Claude "ลืม" ทุก turn (26 มีนาคม)
+
+วิศวกรของ Anthropic แก้ไข cache optimization เพื่อประหยัดต้นทุน แต่กลับเผลอใส่ bug ที่ทำให้ข้อมูล session ถูกล้างทิ้งทุกครั้งที่มีการตอบกลับ แทนที่ Claude จะจำ context ไว้ 1 ชั่วโมงตามปกติ มันกลับเริ่มต้นใหม่ทุก turn
+
+ผลลัพธ์คือ Claude ในช่วงนั้น "ขี้ลืมและพูดซ้ำ" อย่างน่าหงุดหน่าย bug นี้ถูกแก้ไขเมื่อวันที่ 10 เมษายน สำหรับ Sonnet 4.6 และ Opus 4.6
+
+<Callout type="warning">
+  bug นี้น่าสนใจมากเพราะผ่านการทดสอบทั้ง code review โดยมนุษย์, unit test, end-to-end test, และ dogfooding มาแล้ว แต่ก็ยังหลุดรอดออกมาได้ เนื่องจากเกิดขึ้นเฉพาะใน "stale session" และยากต่อการ reproduce
+</Callout>
+
+### 3. System Prompt ใหม่ตัดคุณภาพคำตอบลง 3% (16 เมษายน)
+
+Anthropic เพิ่มข้อความใน system prompt เพื่อลดความยืดเยื้อของ Claude เช่น จำกัดให้ตอบสั้นลงระหว่าง tool call และ final response ดูเหมือนไม่มีพิษภัย แต่เมื่อนำออกมาใช้จริงพร้อมกับ Opus 4.7 ที่เปิดตัวใหม่ ผลการทดสอบ ablation แสดงให้เห็นว่าคุณภาพลดลงถึง **3%**
+
+<Callout type="tip">
+  💡 Ablation test คือการทดสอบโดยเอาส่วนประกอบบางอย่างออก แล้วดูว่าประสิทธิภาพเปลี่ยนไปอย่างไร วิธีนี้ช่วยวัดได้ว่าแต่ละ component มีผลมากแค่ไหน
+</Callout>
+
+## ทำไม Bug นี้ถึงหลุดผ่านการทดสอบมาได้?
+
+กรณี caching bug นั้นน่าสนใจเป็นพิเศษ Anthropic อธิบายว่า bug อยู่ที่จุดตัดระหว่าง Claude Code, Anthropic API, และ extended thinking ซึ่งทำให้ยากต่อการ reproduce และตรวจพบ กว่าจะหาต้นตอได้ใช้เวลากว่าหนึ่งสัปดาห์
+
+ที่น่าสนใจกว่านั้น Anthropic ทดสอบโดยให้ **Claude Opus 4.7** ตรวจ code ที่มี bug แล้วพบว่า Opus 4.7 หา bug เจอ แต่ Opus 4.6 ทำไม่ได้ — แสดงให้เห็นว่าโมเดลใหม่กว่ามีความสามารถด้าน code review ที่เหนือกว่าจริงๆ
+
+## Anthropic แก้ไขและชดเชยอย่างไร?
+
+Anthropic ได้ดำเนินการหลายอย่างหลังจากยืนยันปัญหา ได้แก่ แก้ไขทั้ง 3 จุดที่เป็นปัญหาแล้ว, **รีเซ็ต usage limit ให้กับ subscriber ทุกคน** เพื่อชดเชยช่วงเวลาที่ประสิทธิภาพลดลง, เพิ่มการทดสอบภายในก่อน deploy จริง, ปรับปรุงระบบ Code Review tool, และเปิด X account `@ClaudeDevs` สำหรับสื่อสารกับ developer โดยตรง
+
+<Callout type="info">
+  Claude Code เวอร์ชันที่แก้ไขแล้วคือ **v2.1.116** (วันที่ 20 เมษายน) และ **v2.1.118** ล่าสุดที่ตั้ง reasoning ระดับ "xhigh" เป็นค่าเริ่มต้น
+</Callout>
+
+## บทเรียนจากเหตุการณ์นี้
+
+เหตุการณ์นี้สะท้อนให้เห็นปัญหาที่ซับซ้อนในการพัฒนา AI product ระดับ production หลายอย่าง
+
+อย่างแรกคือเรื่อง **การสื่อสาร** Anthropic ถูกวิจารณ์อย่างหนักว่าในช่วงแรกนั้นไม่ได้ยอมรับปัญหา บางครั้งยังบอกว่าเป็นความเข้าใจผิดของ user ซึ่งสร้างความไม่พอใจในชุมชนนักพัฒนามาก
+
+อย่างที่สองคือ **ผลกระทบจากการเปลี่ยนแปลงเล็กน้อย** การปรับ system prompt เพียงไม่กี่บรรทัด หรือเปลี่ยนค่า effort level สามารถส่งผลกระทบต่อคุณภาพได้มากกว่าที่คาดไว้ในระบบที่ซับซ้อนอย่าง LLM
+
+อย่างที่สามคือ **ความสำคัญของ developer trust** Anthropic สร้างฐานธุรกิจส่วนใหญ่จากความไว้วางใจของ developer — revenue run rate ที่ 3 หมื่นล้านดอลลาร์ต่อปีส่วนหนึ่งมาจาก Claude Code โดยตรง เหตุการณ์นี้จึงกระทบทั้งชื่อเสียงและความมั่นใจของผู้ใช้
+
+---
+
+## ที่มาบทความ
+
+บทความนี้แปลและเรียบเรียงจาก **Anthropic admits it dumbed down Claude when trying to make it smarter** โดย Thomas Claburn เผยแพร่ครั้งแรกบน The Register เมื่อ 23 เมษายน 2026
+
+🔗 [อ่านบทความต้นฉบับภาษาอังกฤษได้ที่นี่](https://www.theregister.com/2026/04/23/anthropic_says_it_has_fixed/)

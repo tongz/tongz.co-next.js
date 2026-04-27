@@ -1,0 +1,81 @@
+---
+title: "NVIDIA Ising: Open Source AI Model แรกของโลกสำหรับ Quantum Computing"
+date: "2026-04-27"
+lastModified: "2026-04-27"
+tags: ["nvidia", "quantum-computing", "open-source", "ai", "ising"]
+coverImage: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&q=80"
+coverImageAlt: "quantum computer chip ใกล้ชิด — NVIDIA Ising open source quantum AI model"
+excerpt: "NVIDIA เปิดตัว Ising ครอบครัว AI model แบบ open source ตัวแรกของโลกสำหรับ Quantum Computing แก้ปัญหา calibration และ error correction ได้เร็วขึ้น 2.5 เท่า"
+slug: "nvidia-ising-open-source-quantum-ai-model-2026"
+author: "tongz"
+draft: false
+canonicalUrl: "https://nvidianews.nvidia.com/news/nvidia-launches-ising-the-worlds-first-open-ai-models-to-accelerate-the-path-to-useful-quantum-computers"
+sourceTitle: "NVIDIA Launches Ising, the World's First Open AI Models to Accelerate the Path to Useful Quantum Computers"
+sourceUrl: "https://nvidianews.nvidia.com/news/nvidia-launches-ising-the-worlds-first-open-ai-models-to-accelerate-the-path-to-useful-quantum-computers"
+sourceAuthor: ""
+sourcePublishedAt: "2026-04-14"
+---
+
+import { Callout } from '@/components/Callout'
+
+# NVIDIA Ising: Open Source AI Model แรกของโลกสำหรับ Quantum Computing
+
+![quantum computer chip ใกล้ชิด — NVIDIA Ising open source quantum AI model](https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&q=80)
+
+เมื่อวันที่ 14 เมษายน 2026 ซึ่งตรงกับ **World Quantum Day** พอดี NVIDIA ได้ประกาศเปิดตัว **NVIDIA Ising** ครอบครัว open source AI model ชุดแรกของโลกที่ออกแบบมาเพื่อแก้ปัญหาหัวใจหลักสองประการของ Quantum Computing ได้แก่ การ calibration และ error correction ซึ่งเป็นด่านใหญ่ที่กั้นระหว่าง quantum processor ในปัจจุบันกับการใช้งานจริงในระดับ enterprise
+
+## Quantum Computing คืออะไร และทำไมถึงยังยาก?
+
+Quantum Computer ใช้ qubit (quantum bit) แทน bit แบบเดิม ซึ่งสามารถอยู่ในสถานะ 0 และ 1 พร้อมกันได้ ทำให้มีพลังประมวลผลสูงมากสำหรับปัญหาเฉพาะทาง เช่น การค้นพบยาใหม่ หรือการจำลองโมเลกุล
+
+ปัญหาคือ qubit นั้น **ไม่เสถียรอย่างมาก** quantum processor ที่ดีที่สุดในปัจจุบันยังคงเกิด error ประมาณ 1 ครั้งต่อทุก 1,000 operations และเพื่อให้ใช้งานได้จริงในระดับ enterprise ต้องลดตัวเลขนั้นให้เหลือ 1 ในล้านล้าน operations 
+
+<Callout type="info">
+  World Quantum Day จัดขึ้นทุกวันที่ 14 เมษายน โดยเลือกวันนี้เพราะตัวเลข 4.14 แทน 3 หลักแรกของ Planck constant (6.626×10⁻³⁴) ซึ่งเป็นค่าคงที่พื้นฐานของฟิสิกส์ quantum
+</Callout>
+
+## NVIDIA Ising คืออะไร?
+
+NVIDIA Ising เป็น AI model family แบบ open source ที่ออกแบบมาเพื่อเร่งการพัฒนา quantum computing โดยเฉพาะด้าน calibration และ error correction  ชื่อ "Ising" นั้นตั้งตามแบบจำลองทางคณิตศาสตร์ที่มีชื่อเสียงซึ่งช่วยทำให้การอธิบายระบบฟิสิกส์ที่ซับซ้อนง่ายขึ้นอย่างมาก
+
+ในเวอร์ชันแรกนี้ Ising มีสองส่วนหลัก:
+
+### Ising Calibration — AI ที่ปรับจูน Quantum Processor แทนผู้เชี่ยวชาญ
+
+Ising Calibration เป็น vision-language model ขนาด 35 พันล้านพารามิเตอร์ ที่ถูก fine-tune มาเพื่ออ่านค่าจากการทดลองบน Quantum Processing Unit (QPU) และประเมินว่าต้องปรับค่าใดบ้าง ซึ่งลดเวลา calibration จากเดิมที่ใช้เวลาหลายวันเหลือเพียงไม่กี่ชั่วโมงเมื่อใช้ร่วมกับ AI agent 
+
+<Callout type="tip">
+  💡 เปรียบง่ายๆ คือ Ising Calibration เหมือนช่างเทคนิค AI ที่นั่งดูแลและปรับจูน quantum processor ตลอด 24 ชั่วโมง แทนที่จะต้องใช้นักฟิสิกส์ quantum มานั่งทำเองเป็นวันๆ
+</Callout>
+
+### Ising Decoding — แก้ Error แบบ Real-time เร็วกว่าเดิม 2.5 เท่า
+
+Ising Decoding ประกอบด้วย 3D convolutional neural network สองรูปแบบ ขนาด 0.9 ล้านและ 1.8 ล้านพารามิเตอร์ตามลำดับ โดย NVIDIA benchmark ว่าเร็วกว่า pyMatching ซึ่งเป็น open-source decoder มาตรฐานที่กลุ่มวิจัย quantum ส่วนใหญ่ใช้อยู่ถึง 2.5 เท่า และแม่นยำกว่า 3 เท่า โดยใช้ training data น้อยกว่าถึง 10 เท่า 
+
+## ใครนำไปใช้แล้วบ้าง?
+
+สถาบันชั้นนำที่นำ Ising ไปใช้งานแล้ว ได้แก่ Harvard John A. Paulson School of Engineering and Applied Sciences, Fermi National Accelerator Laboratory, Lawrence Berkeley National Laboratory's Advanced Quantum Testbed, IQM Quantum Computers, และ U.K. National Physical Laboratory (NPL) 
+
+การประกาศดังกล่าวส่งผลให้หุ้น quantum computing พุ่งแรงทั่วหน้า โดย IonQ และ D-Wave Quantum ขึ้นกว่า 50% ในสัปดาห์เดียวกัน ขณะที่ Quantum Computing และ Rigetti Computing พุ่งขึ้นกว่า 30% 
+
+## Open Source แต่ Platform ยัง Proprietary
+
+แม้ Ising จะเป็น open source แต่ stack ที่รองรับนั้นไม่ใช่ Decoder ต้องการ NVQLink low-latency interconnect เพื่อส่งข้อมูลไปยัง GPU และ calibration workflow ทำงานผ่าน CUDA-Q โดย deployment tooling มุ่งเป้าไปที่ NVIDIA hardware เป็นหลัก ซึ่งเป็น pattern เดียวกับที่ NVIDIA ทำกับ Nemotron, Cosmos และ GR00T มาก่อน 
+
+<Callout type="warning">
+  นี่คือกลยุทธ์ "open model, closed platform" ที่ NVIDIA ใช้บ่อยครั้ง — เปิด model ให้ใช้ฟรี แต่ถ้าอยากได้ performance เต็มๆ ต้องใช้ hardware และ software ecosystem ของ NVIDIA เท่านั้น
+</Callout>
+
+## Jensen Huang มองอย่างไร?
+
+CEO Jensen Huang สรุปวิสัยทัศน์ได้กระชับว่า "AI จะกลายเป็น control plane ของ quantum hardware โดย AI model จะจัดการ noise ของ qubit ในระดับที่ต้องการ และ model เหล่านี้ต้องเป็น open source เพื่อให้ community สามารถ customize, fine-tune และปรับปรุงต่อได้" 
+
+ตลาด quantum computing คาดว่าจะมีมูลค่าเกิน $11 พันล้านดอลลาร์ภายในปี 2030 และ NVIDIA กำลังวางตัวเองให้เป็นกำลังสำคัญที่ขับเคลื่อนการเติบโตนั้น
+
+---
+
+## ที่มาบทความ
+
+บทความนี้แปลและเรียบเรียงจาก **NVIDIA Launches Ising, the World's First Open AI Models to Accelerate the Path to Useful Quantum Computers** เผยแพร่ครั้งแรกบน NVIDIA Newsroom เมื่อ 14 เมษายน 2026
+
+🔗 [อ่านบทความต้นฉบับภาษาอังกฤษได้ที่นี่](https://nvidianews.nvidia.com/news/nvidia-launches-ising-the-worlds-first-open-ai-models-to-accelerate-the-path-to-useful-quantum-computers)

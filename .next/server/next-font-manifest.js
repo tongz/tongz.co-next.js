@@ -1,0 +1,1 @@
+self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{\"/home/tongz/hub/projects/tongz.co/app/layout\":[\"static/media/f196b1e65fee88ed-s.p.woff2\",\"static/media/cc95fdb254242a42-s.p.woff2\"]},\"appUsingSizeAdjust\":true,\"pagesUsingSizeAdjust\":false}"
